@@ -1,25 +1,51 @@
 const {useState} = React;
 
-function todoList() {
+function Task(id,title){
+    this.id = id;
+    this.title = title;
+}
+function addTask(id,title,setTaskList) {
+    const newTask = new Task(id,title);
+    setTaskList((prev) => [...prev,newTask]);
+}
+
+function TodoList() {
+    const [taskList, setTaskList] = useState([]);
+    const [addTaskInput, setAddTaskInput] = useState("");
+
+    function loadTask(){
+        return taskList.map((task)=>{
+            return React.createElement('li',{id: task.id},task.title);
+        });
+    }
+
     return React.createElement(
         'div',
-        {class: "todo_wrapper"},
+        {className: "todo_wrapper"},
         React.createElement(
             'div',
-            {class: "list_wrapper"},
-            "List div here"
+            {className: "list_wrapper"},
+            React.createElement(
+                'ul',
+                null,
+                loadTask()
+            )
         ),
         React.createElement(
             'div',
-            {class: "input_wrapper"},
+            {className: "input_wrapper"},
             React.createElement(
                 'input',
-                {class: "add_task_input"},
-                "add task"
+                {className: "add_task_input",onChange: (e)=> {setAddTaskInput(e.target.value)}}
+            ),
+            React.createElement(
+                'button',
+                {className: "add_task_button",onClick: (e)=> {addTask(1,addTaskInput,setTaskList)}},
+                "Add Task"
             )
         )
     );
 }
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(React.createElement(todoList));
+root.render(React.createElement(TodoList));
