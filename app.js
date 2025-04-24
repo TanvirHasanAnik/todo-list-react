@@ -15,7 +15,11 @@ function TodoList() {
 
     function loadTask(){
         return taskList.map((task)=>{
-            return React.createElement('li',{id: task.id},task.title);
+            return React.createElement('li',{id: task.id},
+                React.createElement('span',null,task.title),
+                React.createElement('button',{className: "edit_button", id: task.id},'Edit'),
+                React.createElement('button',{className: "delete_button", id: task.id, onClick: (e)=> {e.target.closest(`li[id="${task.id}"]`).remove()}},'Delete')
+            );
         });
     }
 
@@ -40,7 +44,7 @@ function TodoList() {
             ),
             React.createElement(
                 'button',
-                {className: "add_task_button",onClick: (e)=> {addTask(1,addTaskInput,setTaskList)}},
+                {className: "add_task_button",onClick: (e)=> {addTask((taskList[taskList.length - 1]?.id ?? 0)+1,addTaskInput,setTaskList)}},
                 "Add Task"
             )
         )
