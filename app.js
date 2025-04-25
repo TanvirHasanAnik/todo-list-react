@@ -49,9 +49,9 @@ function TodoList() {
                     }},'Cancel'),
     
                     React.createElement('button',{className: "delete_button", id: task.id, onClick: (e)=> {
-                        if(editId === null){
+                        if(editId !== task.id){
                             setTaskList((prev)=> {
-                                return prev.filter((taskItem)=> Number(taskItem.id) !== Number(e.target.getAttribute('id')) && editId == null);
+                                return prev.filter((taskItem)=> Number(taskItem.id) !== Number(e.target.getAttribute('id')));
                             })
                         }
                 }},'Delete')
