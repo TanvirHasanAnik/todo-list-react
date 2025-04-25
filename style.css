@@ -1,0 +1,28 @@
+.todo_wrapper{
+    background-color: lightblue;
+    padding: 24px;
+}
+
+.list_wrapper{
+    background-color: white;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.task_ul_wrapper{
+    padding: 0;
+}
+
+.task_list{
+    list-style-type: none;
+    padding: 12px;
+    margin-bottom: 10px;
+    background-color: lightgreen;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.input_wrapper{
+
+}
