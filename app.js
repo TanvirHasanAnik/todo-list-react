@@ -14,7 +14,7 @@ function addTask(id,title,setTaskList,setAddTaskInput) {
 
 function editTask(id,title,taskList,setTaskList,setEditId,setAddTaskInput){
     const updatedTaskList = taskList.map((element)=>{
-        if(Number(element.id) === Number(id) && id !== null && id !== ""){
+        if(Number(element.id) === Number(id) && id !== null && id !== "" && title){
             element.title = title;
             return element;
         }
@@ -49,9 +49,11 @@ function TodoList() {
                     }},'Cancel'),
     
                     React.createElement('button',{className: "delete_button", id: task.id, onClick: (e)=> {
-                        setTaskList((prev)=> {
-                        return prev.filter((taskItem)=> Number(taskItem.id) !== Number(e.target.getAttribute('id')));
-                    })
+                        if(editId === null){
+                            setTaskList((prev)=> {
+                                return prev.filter((taskItem)=> Number(taskItem.id) !== Number(e.target.getAttribute('id')) && editId == null);
+                            })
+                        }
                 }},'Delete')
 
                 )
