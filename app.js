@@ -4,14 +4,33 @@ function Task(id,title){
     this.id = id;
     this.title = title;
 }
-function addTask(id,title,setTaskList) {
-    const newTask = new Task(id,title);
-    setTaskList((prev) => [...prev,newTask]);
+function addTask(id,title,setTaskList,setAddTaskInput) {
+    if(title){
+        const newTask = new Task(id,title);
+        setTaskList((prev) => [...prev,newTask]);
+        setAddTaskInput("");
+    }
+}
+
+function editTask(id,title,taskList,setTaskList,setEditId,setAddTaskInput){
+    const updatedTaskList = taskList.map((element)=>{
+        if(Number(element.id) === Number(id) && id !== null && id !== ""){
+            element.title = title;
+            return element;
+        }
+        else{
+            return element;
+        }
+    });
+    setTaskList(updatedTaskList);
+    setEditId(null);
+    setAddTaskInput("");
 }
 
 function TodoList() {
     const [taskList, setTaskList] = useState([]);
     const [addTaskInput, setAddTaskInput] = useState("");
+    const [editId, setEditId] = useState(null);
 
     function loadTask(){
         return taskList.map((task)=>{
@@ -19,17 +38,10 @@ function TodoList() {
                 React.createElement('span',null,task.title),
                 React.createElement('div',{className: "task_button_wrapper"},
                     React.createElement('button',{className: "edit_button", id: task.id, onClick: (e)=>{
-                        const editedTitle = prompt(`Edit ${task.title}`, `${task.title}`).trim();
-                        const updatedTaskList = taskList.map((element)=>{
-                            if(Number(element.id) === Number(task.id) && editedTitle !== null && editedTitle !== ""){
-                                element.title = editedTitle;
-                                return element;
-                            }
-                            else{
-                                return element;
-                            }
-                        });
-                        setTaskList(updatedTaskList);
+
+                        setAddTaskInput(`${task.title}`);
+                        setEditId(task.id);
+
                     }},'Edit'),
     
                     React.createElement('button',{className: "delete_button", id: task.id, onClick: (e)=> {
@@ -60,12 +72,18 @@ function TodoList() {
             {className: "input_wrapper"},
             React.createElement(
                 'input',
-                {className: "add_task_input",onChange: (e)=> {setAddTaskInput(e.target.value)}}
+                {className: "add_task_input",value: `${addTaskInput}`,onChange: (e)=> {setAddTaskInput(e.target.value)}}
             ),
             React.createElement(
                 'button',
-                {className: "add_task_button",onClick: (e)=> {addTask((taskList[taskList.length - 1]?.id ?? 0)+1,addTaskInput,setTaskList)}},
-                "Add Task"
+                {className: "add_task_button",onClick: (e)=> {
+                    console.log(editId);
+                    console.log(addTaskInput);
+                    console.log(taskList);
+                    console.log(setTaskList);
+                    editId !== null ? editTask(editId,addTaskInput,taskList,setTaskList,setEditId,setAddTaskInput) : addTask((taskList[taskList.length - 1]?.id ?? 0)+1,addTaskInput,setTaskList,setAddTaskInput)
+                }},
+                editId !== null ? "Edit Task" : "Add Task"
             )
         )
     );
