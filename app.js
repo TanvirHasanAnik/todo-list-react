@@ -37,12 +37,16 @@ function TodoList() {
             return React.createElement('li',{className: "task_list",id: task.id},
                 React.createElement('span',null,task.title),
                 React.createElement('div',{className: "task_button_wrapper"},
-                    editId !== task.id && React.createElement('button',{className: "edit_button", id: task.id, onClick: (e)=>{
+                    editId !== task.id ? React.createElement('button',{className: "edit_button", id: task.id, onClick: (e)=>{
 
                         setAddTaskInput(`${task.title}`);
                         setEditId(task.id);
 
-                    }},'Edit'),
+                    }},'Edit') :
+                    React.createElement('button',{className: "edit_button", id: task.id, onClick: (e)=>{
+                        setEditId(null);
+
+                    }},'Cancel'),
     
                     React.createElement('button',{className: "delete_button", id: task.id, onClick: (e)=> {
                         setTaskList((prev)=> {
