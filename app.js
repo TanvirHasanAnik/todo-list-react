@@ -19,9 +19,9 @@ function TodoList() {
                 React.createElement('span',null,task.title),
                 React.createElement('div',{className: "task_button_wrapper"},
                     React.createElement('button',{className: "edit_button", id: task.id, onClick: (e)=>{
-                        const editedTitle = prompt(`Edit ${task.title}`, `${task.title}`);
+                        const editedTitle = prompt(`Edit ${task.title}`, `${task.title}`).trim();
                         const updatedTaskList = taskList.map((element)=>{
-                            if(Number(element.id) === Number(task.id)){
+                            if(Number(element.id) === Number(task.id) && editedTitle !== null && editedTitle !== ""){
                                 element.title = editedTitle;
                                 return element;
                             }
