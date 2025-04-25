@@ -17,10 +17,25 @@ function TodoList() {
         return taskList.map((task)=>{
             return React.createElement('li',{id: task.id},
                 React.createElement('span',null,task.title),
-                React.createElement('button',{className: "edit_button", id: task.id},'Edit'),
-                React.createElement('button',{className: "delete_button", id: task.id, onClick: (e)=> {setTaskList((prev)=> {
+                React.createElement('button',{className: "edit_button", id: task.id, onClick: (e)=>{
+                    const editedTitle = prompt(`Edit ${task.title}`, `${task.title}`);
+                    const updatedTaskList = taskList.map((element)=>{
+                        if(Number(element.id) === Number(task.id)){
+                            element.title = editedTitle;
+                            return element;
+                        }
+                        else{
+                            return element;
+                        }
+                    });
+                    setTaskList(updatedTaskList);
+                }},'Edit'),
+
+                React.createElement('button',{className: "delete_button", id: task.id, onClick: (e)=> {
+                    setTaskList((prev)=> {
                     return prev.filter((taskItem)=> Number(taskItem.id) !== Number(e.target.getAttribute('id')));
-                })}},'Delete')
+                })
+            }},'Delete')
             );
         });
     }
