@@ -39,6 +39,10 @@ function TodoList() {
 
     
     function addTask(id,addTaskForm) {
+        if (!addTaskForm.title) {
+            alert('Task title is required!');
+            return;
+        }
         if(addTaskForm){
             const now = new Date();
             const createdAt = now.toLocaleString();
@@ -133,7 +137,8 @@ function TodoList() {
                                 className: "form_input",
                                 placeholder: "Task Title",
                                 value: addTaskForm.title || '',
-                                onChange: (e) => setAddTaskForm({...addTaskForm, title: e.target.value})
+                                required: true,
+                                onChange: (e) => setAddTaskForm({...addTaskForm, title: e.target.value}),
                             }),
                             React.createElement('textarea', {
                                 className: "form_textarea",
@@ -173,7 +178,7 @@ function TodoList() {
                 React.createElement('td', null, task.id),
                 React.createElement('td', null, task.title),
                 React.createElement('td', null, task.createdAt),
-                React.createElement('td', null, task.dueDate),
+                React.createElement('td', null, task.dueDate || "N/A"),
                 React.createElement('input', {
                     type: "checkbox",
                     className: "form_checkbox",
