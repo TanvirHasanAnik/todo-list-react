@@ -182,8 +182,16 @@ function TodoList() {
                 React.createElement('input', {
                     type: "checkbox",
                     className: "form_checkbox",
-                    checked: addTaskForm.completed || false,
-                    onChange: (e) => setAddTaskForm({...addTaskForm, completed: e.target.checked})
+                    checked: task.completed || false,
+                    onChange: (e) => {
+                        const updatedTasks = taskList.map((item) => {
+                            if (item.id === task.id) {
+                                return {...item, completed: e.target.checked};
+                            }
+                            return item;
+                        });
+                        setTaskList(updatedTasks);
+                    }
                 }),
                 React.createElement('td', null, 
                     React.createElement('div', { className: "task_button_wrapper" },
