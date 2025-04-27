@@ -1,3 +1,7 @@
+.full_page_wrapper{
+    display: flex;
+}
+
 .todo_wrapper{
     background-color: lightblue;
     padding: 24px;
