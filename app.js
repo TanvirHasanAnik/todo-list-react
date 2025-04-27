@@ -40,9 +40,19 @@ function TodoList() {
     
     function addTask(id,addTaskForm) {
         if(addTaskForm){
-            const newTask = new Task(id,addTaskForm.title, addTaskForm.description, addTaskForm.createdAt, addTaskForm.dueDate, false);
+            const now = new Date();
+            const createdAt = now.toLocaleString();
+            const newTask = new Task(id,addTaskForm.title, addTaskForm.description, createdAt, addTaskForm.dueDate, false);
             setTaskList((prev) => [...prev,newTask]);
             setNavState("task_list");
+            setAddTaskForm({
+                id: '',
+                title: '',
+                description: '',
+                createdAt: '',
+                dueDate: '',
+                completed: false
+            });
             console.log(newTask);
         }
     }
@@ -130,12 +140,6 @@ function TodoList() {
                                 placeholder: "Task Description",
                                 value: addTaskForm.description || '',
                                 onChange: (e) => setAddTaskForm({...addTaskForm, description: e.target.value})
-                            }),
-                            React.createElement('input', {
-                                type: "datetime-local",
-                                className: "form_input",
-                                value: addTaskForm.createdAt || '',
-                                onChange: (e) => setAddTaskForm({...addTaskForm, createdAt: e.target.value})
                             }),
                             React.createElement('input', {
                                 type: "date",
