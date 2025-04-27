@@ -36,6 +36,14 @@ function TodoList() {
         dueDate: '',
         completed: false
     });
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [editTaskForm, setEditTaskForm] = useState({
+        id: '',
+        title: '',
+        description: '',
+        dueDate: '',
+        completed: false
+    });
 
     
     function addTask(id,addTaskForm) {
@@ -60,6 +68,65 @@ function TodoList() {
             console.log(newTask);
         }
     }
+
+    function EditTaskModal() {
+        if (!isEditModalOpen) return null;
+    
+        return React.createElement(
+            'div',
+            {className: 'modal_overlay'},
+            React.createElement(
+                'div',
+                {className: 'modal_content'},
+                React.createElement('h2', null, 'Edit Task'),
+                React.createElement('input', {
+                    className: 'form_input',
+                    value: editTaskForm.title,
+                    onChange: (e) => setEditTaskForm({...editTaskForm, title: e.target.value}),
+                    placeholder: 'Task Title'
+                }),
+                React.createElement('textarea', {
+                    className: 'form_textarea',
+                    value: editTaskForm.description,
+                    onChange: (e) => setEditTaskForm({...editTaskForm, description: e.target.value}),
+                    placeholder: 'Task Description'
+                }),
+                React.createElement('input', {
+                    type: 'date',
+                    className: 'form_input',
+                    value: editTaskForm.dueDate,
+                    onChange: (e) => setEditTaskForm({...editTaskForm, dueDate: e.target.value})
+                }),
+                React.createElement('div', {className: 'modal_buttons'},
+                    React.createElement('button', {
+                        className: 'submit_task_button',
+                        onClick: () => {
+                            const updatedTasks = taskList.map((t) => {
+                                if (t.id === editTaskForm.id) {
+                                    return {
+                                        ...t,
+                                        title: editTaskForm.title,
+                                        description: editTaskForm.description,
+                                        dueDate: editTaskForm.dueDate
+                                    };
+                                }
+                                return t;
+                            });
+                            setTaskList(updatedTasks);
+                            setIsEditModalOpen(false);
+                        }
+                    }, 'Save'),
+                    React.createElement('button', {
+                        className: 'delete_button',
+                        onClick: () => {
+                            setIsEditModalOpen(false);
+                        }
+                    }, 'Cancel')
+                )
+            )
+        );
+    }
+    
 
     function renderContent() {
         switch (navstate) {
@@ -215,12 +282,20 @@ function TodoList() {
                     })),
                 React.createElement('td', null, 
                     React.createElement('div', { className: "task_button_wrapper" },
-                        editId !== task.id ? React.createElement('button', { className: "edit_button", id: task.id, onClick: (e) => {
-                            setEditId(task.id);
-                        } }, 'Edit') :
                         React.createElement('button', { className: "edit_button", id: task.id, onClick: (e) => {
-                            setEditId(null);
-                        } }, 'Cancel'),
+                            const taskToEdit = taskList.find(t => t.id === task.id);
+                                if (taskToEdit) {
+                                    setEditTaskForm({
+                                        id: taskToEdit.id,
+                                        title: taskToEdit.title,
+                                        description: taskToEdit.description,
+                                        dueDate: taskToEdit.dueDate,
+                                        completed: taskToEdit.completed
+                                    });
+                                    setIsEditModalOpen(true);
+                                }
+                            }
+                            }, 'Edit'),
     
                         React.createElement('button', { className: "delete_button", id: task.id, onClick: (e) => {
                             if (editId !== task.id) {
@@ -260,6 +335,7 @@ function TodoList() {
                 )
             )
         ),
+        EditTaskModal(),
         renderContent()
     )
 }
