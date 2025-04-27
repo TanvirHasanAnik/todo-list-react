@@ -44,6 +44,15 @@ function TodoList() {
         dueDate: '',
         completed: false
     });
+    const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+    const [viewTaskForm, setViewTaskForm] = useState({
+        id: '',
+        title: '',
+        description: '',
+        dueDate: '',
+        createdAt: '',
+        completed: false
+    });
 
     
     function addTask(id,addTaskForm) {
@@ -68,6 +77,34 @@ function TodoList() {
             console.log(newTask);
         }
     }
+
+    function ViewTaskModal() {
+        if (!isViewModalOpen) return null;
+    
+        return React.createElement(
+            'div',
+            { className: 'modal_overlay' },
+            React.createElement(
+                'div',
+                { className: 'modal_content' },
+                React.createElement('h2', null, 'View Task'),
+                React.createElement('p', null, `Title: ${viewTaskForm.title}`),
+                React.createElement('p', null, `Description: ${viewTaskForm.description}`),
+                React.createElement('p', null, `Due Date: ${viewTaskForm.dueDate || 'N/A'}`),
+                React.createElement('p', null, `Created At: ${viewTaskForm.createdAt || 'N/A'}`),
+                React.createElement('p', null, `Completed: ${viewTaskForm.completed ? 'Yes' : 'No'}`),
+                React.createElement('div', { className: 'modal_buttons' },
+                    React.createElement('button', {
+                        className: 'close_button',
+                        onClick: () => {
+                            setIsViewModalOpen(false);
+                        }
+                    }, 'Close')
+                )
+            )
+        );
+    }
+    
 
     function EditTaskModal() {
         if (!isEditModalOpen) return null;
@@ -296,6 +333,24 @@ function TodoList() {
                                 }
                             }
                             }, 'Edit'),
+                            React.createElement('button', {
+                                className: "view_button",
+                                id: task.id,
+                                onClick: (e) => {
+                                    const taskToView = taskList.find(t => t.id === task.id);
+                                    if (taskToView) {
+                                        setViewTaskForm({
+                                            id: taskToView.id,
+                                            title: taskToView.title,
+                                            description: taskToView.description,
+                                            dueDate: taskToView.dueDate,
+                                            createdAt: taskToView.createdAt,
+                                            completed: taskToView.completed
+                                        });
+                                        setIsViewModalOpen(true);
+                                    }
+                                }
+                            }, 'View'),
     
                         React.createElement('button', { className: "delete_button", id: task.id, onClick: (e) => {
                             if (editId !== task.id) {
@@ -336,6 +391,7 @@ function TodoList() {
             )
         ),
         EditTaskModal(),
+        ViewTaskModal(),
         renderContent()
     )
 }
