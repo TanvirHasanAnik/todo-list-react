@@ -27,7 +27,6 @@ function editTask(id,title,taskList,setTaskList,setEditId,setAddTaskInput){
 function TodoList() {
     const [navstate,setNavState] = useState("task_list");
     const [taskList, setTaskList] = useState([]);
-    const [addTaskInput, setAddTaskInput] = useState("");
     const [editId, setEditId] = useState(null);
     const [addTaskForm, setAddTaskForm] = useState({
         id: '',
@@ -41,7 +40,7 @@ function TodoList() {
     
     function addTask(id,addTaskForm) {
         if(addTaskForm){
-            const newTask = new Task(id,addTaskForm.title, addTaskForm.description, addTaskForm.createdAt, addTaskForm.dueDate, addTaskForm.completed);
+            const newTask = new Task(id,addTaskForm.title, addTaskForm.description, addTaskForm.createdAt, addTaskForm.dueDate, false);
             setTaskList((prev) => [...prev,newTask]);
             setNavState("task_list");
             console.log(newTask);
@@ -58,25 +57,55 @@ function TodoList() {
                         'div',
                         {className: "list_wrapper"},
                         React.createElement(
-                            'ul',
-                            {className: "task_ul_wrapper"},
-                            loadTask()
+                            'table',
+                            {className: "task_table"},
+                            React.createElement(
+                                'thead',
+                                {className: "table_thead"},
+                                React.createElement(
+                                    'tr',
+                                    {className: "table_head_tr"},
+                                    React.createElement(
+                                        'th',
+                                        null,
+                                        "ID",
+                                    ),
+                                    React.createElement(
+                                        'th',
+                                        null,
+                                        "title",
+                                    ),
+                                    React.createElement(
+                                        'th',
+                                        null,
+                                        "createdAt",
+                                    ),
+                                    React.createElement(
+                                        'th',
+                                        null,
+                                        "dueDate",
+                                    ),
+                                    React.createElement(
+                                        'th',
+                                        null,
+                                        "completed",
+                                    )
+                                )
+                            ),
+
+                            React.createElement(
+                                'tbody',
+                                {className: "table_tbody"},
+                                loadTask()
+                            )
                         )
                     ),
                     React.createElement(
-                        'div',
-                        {className: "input_wrapper"},
-                        React.createElement(
-                            'input',
-                            {className: "add_task_input", value: addTaskInput, onChange: (e) => { setAddTaskInput(e.target.value) }}
-                        ),
-                        React.createElement(
-                            'button',
-                            {className: "add_task_button", onClick: (e) => {
-                                setNavState("add_task");
-                            }},
-                            "Add Task"
-                        )
+                        'button',
+                        {className: "add_task_button", onClick: (e) => {
+                            setNavState("add_task");
+                        }},
+                        "Add Task"
                     )
                 );
             
@@ -90,51 +119,30 @@ function TodoList() {
                         React.createElement(
                             'form',
                             {className: "add_task_form"},
-                
-                            // Title input
                             React.createElement('input', {
                                 className: "form_input",
                                 placeholder: "Task Title",
                                 value: addTaskForm.title || '',
                                 onChange: (e) => setAddTaskForm({...addTaskForm, title: e.target.value})
                             }),
-                
-                            // Description input
                             React.createElement('textarea', {
                                 className: "form_textarea",
                                 placeholder: "Task Description",
                                 value: addTaskForm.description || '',
                                 onChange: (e) => setAddTaskForm({...addTaskForm, description: e.target.value})
                             }),
-                
-                            // Created At input (date or datetime-local)
                             React.createElement('input', {
                                 type: "datetime-local",
                                 className: "form_input",
                                 value: addTaskForm.createdAt || '',
                                 onChange: (e) => setAddTaskForm({...addTaskForm, createdAt: e.target.value})
                             }),
-                
-                            // Due Date input (date)
                             React.createElement('input', {
                                 type: "date",
                                 className: "form_input",
                                 value: addTaskForm.dueDate || '',
                                 onChange: (e) => setAddTaskForm({...addTaskForm, dueDate: e.target.value})
                             }),
-                
-                            // Completed checkbox
-                            React.createElement('label', {className: "checkbox_label"},
-                                "Completed: ",
-                                React.createElement('input', {
-                                    type: "checkbox",
-                                    className: "form_checkbox",
-                                    checked: addTaskForm.completed || false,
-                                    onChange: (e) => setAddTaskForm({...addTaskForm, completed: e.target.checked})
-                                })
-                            ),
-                
-                            // Submit button
                             React.createElement('button', {
                                 type: "button",
                                 className: "submit_task_button",
@@ -156,29 +164,35 @@ function TodoList() {
     }
 
     function loadTask(){
-        return taskList.map((task)=>{
-            return React.createElement('li',{className: "task_list",id: task.id},
-                React.createElement('span',null,task.title),
-                React.createElement('div',{className: "task_button_wrapper"},
-                    editId !== task.id ? React.createElement('button',{className: "edit_button", id: task.id, onClick: (e)=>{
-
-                        setAddTaskInput(`${task.title}`);
-                        setEditId(task.id);
-
-                    }},'Edit') :
-                    React.createElement('button',{className: "edit_button", id: task.id, onClick: (e)=>{
-                        setEditId(null);
-
-                    }},'Cancel'),
+        return taskList.map((task) => {
+            return React.createElement('tr', { className: "task_row", id: task.id },
+                React.createElement('td', null, task.id),
+                React.createElement('td', null, task.title),
+                React.createElement('td', null, task.createdAt),
+                React.createElement('td', null, task.dueDate),
+                React.createElement('input', {
+                    type: "checkbox",
+                    className: "form_checkbox",
+                    checked: addTaskForm.completed || false,
+                    onChange: (e) => setAddTaskForm({...addTaskForm, completed: e.target.checked})
+                }),
+                React.createElement('td', null, 
+                    React.createElement('div', { className: "task_button_wrapper" },
+                        editId !== task.id ? React.createElement('button', { className: "edit_button", id: task.id, onClick: (e) => {
+                            setEditId(task.id);
+                        } }, 'Edit') :
+                        React.createElement('button', { className: "edit_button", id: task.id, onClick: (e) => {
+                            setEditId(null);
+                        } }, 'Cancel'),
     
-                    React.createElement('button',{className: "delete_button", id: task.id, onClick: (e)=> {
-                        if(editId !== task.id){
-                            setTaskList((prev)=> {
-                                return prev.filter((taskItem)=> Number(taskItem.id) !== Number(e.target.getAttribute('id')));
-                            })
-                        }
-                }},'Delete')
-
+                        React.createElement('button', { className: "delete_button", id: task.id, onClick: (e) => {
+                            if (editId !== task.id) {
+                                setTaskList((prev) => {
+                                    return prev.filter((taskItem) => Number(taskItem.id) !== Number(e.target.getAttribute('id')));
+                                })
+                            }
+                        } }, 'Delete')
+                    )
                 )
             );
         });
