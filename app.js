@@ -103,6 +103,11 @@ function TodoList() {
                                         'th',
                                         null,
                                         "completed",
+                                    ),
+                                    React.createElement(
+                                        'th',
+                                        null,
+                                        "Action",
                                     )
                                 )
                             ),
@@ -146,6 +151,12 @@ function TodoList() {
                                 value: addTaskForm.description || '',
                                 onChange: (e) => setAddTaskForm({...addTaskForm, description: e.target.value})
                             }),
+
+                            React.createElement(
+                                'label',
+                                null,
+                                "Due Date"
+                            ),
                             React.createElement('input', {
                                 type: "date",
                                 className: "form_input",
@@ -172,27 +183,36 @@ function TodoList() {
         }
     }
 
+    function dateTimeSplit(task) {
+        if (!task.createdAt) return "N/A";
+        const parts = task.createdAt.split(",");
+        return React.createElement('div',null,React.createElement('span',null,parts[0]),React.createElement('br'),React.createElement('span',null,parts[1]))
+    }
+
     function loadTask(){
         return taskList.map((task) => {
             return React.createElement('tr', { className: "task_row", id: task.id },
                 React.createElement('td', null, task.id),
                 React.createElement('td', null, task.title),
-                React.createElement('td', null, task.createdAt),
+                React.createElement('td', null, 
+                    dateTimeSplit(task)
+                ),
                 React.createElement('td', null, task.dueDate || "N/A"),
-                React.createElement('input', {
-                    type: "checkbox",
-                    className: "form_checkbox",
-                    checked: task.completed || false,
-                    onChange: (e) => {
-                        const updatedTasks = taskList.map((item) => {
-                            if (item.id === task.id) {
-                                return {...item, completed: e.target.checked};
-                            }
-                            return item;
-                        });
-                        setTaskList(updatedTasks);
-                    }
-                }),
+                React.createElement('td',null,
+                    React.createElement('input', {
+                        type: "checkbox",
+                        className: "form_checkbox",
+                        checked: task.completed || false,
+                        onChange: (e) => {
+                            const updatedTasks = taskList.map((item) => {
+                                if (item.id === task.id) {
+                                    return {...item, completed: e.target.checked};
+                                }
+                                return item;
+                            });
+                            setTaskList(updatedTasks);
+                        }
+                    })),
                 React.createElement('td', null, 
                     React.createElement('div', { className: "task_button_wrapper" },
                         editId !== task.id ? React.createElement('button', { className: "edit_button", id: task.id, onClick: (e) => {
