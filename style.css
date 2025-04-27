@@ -84,6 +84,8 @@
 .add_task_button,
 .submit_task_button,
 .edit_button,
+.close_button,
+.view_button,
 .delete_button {
     background-color: #4a90e2;
     color: white;
@@ -100,6 +102,8 @@
 
 .add_task_button:hover,
 .submit_task_button:hover,
+.view_button:hover,
+.close_button:hover,
 .edit_button:hover {
     background-color: #357ab7;
 }
