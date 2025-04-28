@@ -1,4 +1,4 @@
-/* Reset */
+
 * {
     margin: 0;
     padding: 0;
@@ -6,7 +6,6 @@
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Full Page Layout */
 .full_page_wrapper {
     display: flex;
     height: 100vh;
@@ -14,7 +13,6 @@
     background-color: #fafafa;
 }
 
-/* Sidebar Navigation */
 .navbar {
     width: 200px;
     background-color: #ffffff;
@@ -38,7 +36,6 @@
     background-color: #f0f0f0;
 }
 
-/* Main Content Area */
 .todo_wrapper, .add_task_page {
     flex: 1;
     padding: 30px;
@@ -46,7 +43,6 @@
     overflow-y: auto;
 }
 
-/* Task List */
 .list_wrapper {
     background-color: #fff;
     padding: 20px;
@@ -80,7 +76,6 @@
     background-color: #f0f0f0;
 }
 
-/* Buttons */
 .add_task_button,
 .submit_task_button,
 .edit_button,
@@ -116,7 +111,6 @@
     background-color: #c0392b;
 }
 
-/* Form Page */
 .form_wrapper {
     background-color: #fff;
     padding: 24px;
@@ -148,10 +142,6 @@
     resize: vertical;
 }
 
-.form_checkbox {
-    transform: scale(1.1);
-}
-
 .task_button_wrapper {
     display: flex;
     justify-content: center;
@@ -165,7 +155,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* dark transparent background */
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
