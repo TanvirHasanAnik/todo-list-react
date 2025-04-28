@@ -8,6 +8,26 @@ function TodoApp() {
         )
     }
 
+    function ActionButtons({task}){
+        function onDelete(){
+            let updatedList = taskList.filter(
+                (element) => {
+                    if(Number(task.id) !== Number(element.id)){
+                        return element;
+                    }
+                }
+            );
+            setTaskList(updatedList);
+        }
+        return (
+            <div>
+                <button>View</button>
+                <button>Edit</button>
+                <button onClick={onDelete}>Delete</button>
+            </div>
+        )
+    }
+
     function LoadTask(){
         return taskList.map((element)=> {
             return (
@@ -17,7 +37,7 @@ function TodoApp() {
                     <td><span>{element.createdAt[0]}</span><br/><span>{element.createdAt[1]}</span></td>
                     <td>{element.due_date}</td>
                     <td>{element.completed === true ? "Yes" : "No"}</td>
-                    <td>{element.id}</td>
+                    <td><ActionButtons task={element}/></td>
                 </tr>
             )
         })
