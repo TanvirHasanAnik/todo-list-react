@@ -12,9 +12,7 @@ function TodoApp() {
         function onDelete(){
             let updatedList = taskList.filter(
                 (element) => {
-                    if(Number(task.id) !== Number(element.id)){
-                        return element;
-                    }
+                    return (Number(task.id) !== Number(element.id))
                 }
             );
             setTaskList(updatedList);
@@ -31,7 +29,7 @@ function TodoApp() {
     function LoadTask(){
         return taskList.map((element)=> {
             return (
-                <tr>
+                <tr key={element.id}>
                     <td>{element.id}</td>
                     <td>{element.title}</td>
                     <td><span>{element.createdAt[0]}</span><br/><span>{element.createdAt[1]}</span></td>
